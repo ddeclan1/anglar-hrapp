@@ -1,0 +1,133 @@
+<h2>Employee Information</h2>
+
+<table>
+    <tr>
+        <td>Number:</td>
+        <td>{{empno}}</td>
+        <!-- <td *ngIf = "isEditable">
+            <div class = "form-group">
+                <input [(ngModel)] = "empno"
+                    name = "empno"
+                    id = "empno"
+                    #inputEmpno = "ngModel"
+                    minlength = "3"
+                    maxlength = "8">
+                <span [hidden] = "inputEmpno.valid || inputEmpno.pristine"
+                class = "alert alert-danger">
+                    Employee number should not be less than 3 digits</span>
+            </div>
+        </td> -->
+        <td><button (click) = "toggleEdits()">{{(isEditable)?"Save":"Edit"}}</button></td>
+    </tr>
+    <tr>
+        <td>Name:</td>
+        <td *ngIf = "!isEditable">{{name}}</td>
+        <td *ngIf = "isEditable">
+            <div class = "form-group">
+            <input [(ngModel)] = "name"
+                    #inputName = "ngModel"
+                    minlength = "5"
+                    maxlength = "12">
+                <span [hidden] = "inputName.valid || inputName.pristine"
+                class = "alert alert-danger">
+                    Name should not be less than 5 characters</span>
+            </div>
+        </td>
+    </tr>
+    <tr>
+        <td>Salary:</td>
+        <td *ngIf = "!isEditable">{{salary}}</td>
+        <td *ngIf = "isEditable"> 
+            <div class = "form-group">
+            <input [(ngModel)] = "salary"
+                    #inputSalary = "ngModel"
+                    minlength = "4"
+                    maxlength = "12">
+                <span [hidden] = "inputSalary.valid || inputSalary.pristine"
+                class = "alert alert-danger">
+                    Salary should not be less than 4 figures</span>
+            </div>
+        </td>
+    </tr>
+</table>
+<h2>Department Information</h2>
+<table>
+    <tr>
+        <td>Number:</td>
+        <td *ngIf = "!isEditable">{{currentDepartment.depno}}</td>
+        <td *ngIf = "isEditable">
+            <select id = "dept-select" #selectDept [(ngModel)] = "currentDepartment"
+                (change) = "updateSelection(selectDept.value)">
+                <option *ngFor = "let dept of allDepartments"
+                    value = "{{dept.depno}}">
+                    {{dept.depno}}-{{dept.name}}
+                </option>
+            </select>
+            <!-- <div class = "form-group">
+            <input [(ngModel)] = "currentDepartment.depno"
+            #inputDeptno = "ngModel"
+            minlength = "2"
+            maxlength = "5">
+        <span [hidden] = "inputDeptno.valid || inputDeptno.pristine"
+        class = "alert alert-danger">
+            Department Number should not be less than 2 digits</span>
+    </div> -->
+</td>
+    </tr>
+    <tr>
+        <td>Name:</td>
+        <td *ngIf = "!isEditable">{{currentDepartment.name}}</td>
+        <td *ngIf = "isEditable">
+            <div class = "form-group">
+            <input [(ngModel)] = "currentDepartment.name"
+            #inputName = "ngModel"
+            minlength = "4"
+            maxlength = "12">
+        <span [hidden] = "inputName.valid || inputName.pristine"
+        class = "alert alert-danger">
+            Name should not be less than 4 characters</span>
+    </div>
+</td>
+    </tr>
+    <tr>
+        <td>Location:</td>
+        <td *ngIf = "!isEditable">{{currentDepartment.location}}</td>
+        <td *ngIf = "isEditable">
+            <div class = "form-group">
+            <input [(ngModel)] = "currentDepartment.location"
+            #inputLocation = "ngModel"
+            minlength = "4"
+            maxlength = "12">
+        <span [hidden] = "inputLocation.valid || inputLocation.pristine"
+        class = "alert alert-danger">
+            Location should not be less than 4 characters</span>
+    </div>
+</td>
+    </tr>
+</table>
+<h2>Project Information</h2>
+<table>
+        <tr>
+            <th>Number</th>
+            <th>Project</th>
+            <th>Customer</th>
+            <th><button (click) = "showProjectForm()">+</button></th>
+        </tr>
+        <tr *ngFor = "let a of assignments; let i = index">
+            <td>{{a.proid}}</td>
+            <td>{{a.name}}</td>
+            <td>{{a.customer}}</td>
+            <td><button (click) = "deleteProject(i)">x</button></td>
+        </tr>
+</table>
+<form *ngIf = "isProjectFormVisible" (submit) = "addNewProject(pid.value, pname.value, pcustomer.value)">
+    <table>
+        <tr>
+            <td><input name = "proid" placeholder = "Number" #pid></td>
+            <td><input name = "name" placeholder = "Name" #pname></td>
+            <td><input name = "customer" placeholder = "Customer" #pcustomer></td>
+            <td><input type = "submit" value = "Add"></td>
+            <td><div [hidden] = "isProjectFormValid"> {{invalidFormMessage}}</div></td>
+        </tr>
+    </table>            
+</form>
